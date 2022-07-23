@@ -1,9 +1,10 @@
 const express = require("express");
 // const dotenv = require('dotenv').config()
-// const port = process.env.PORT || 5000
+const port = process.env.PORT || 5000
 const mongoose = require("mongoose");
 const TaskSchema = require("./module");
-const cors = require('cors')
+const cors = require('cors');
+const path = require("path");
 
 const app = express();
 
@@ -21,6 +22,29 @@ mongoose
   app.use(cors({
     origin:'*'
   }))
+
+//   ---------------deployment--------------
+
+__dirname = path.resolve();
+if(process.env.NODE_ENV ===  'production'){
+    app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+    app.get('*', (req, res) => {
+        res.send(path.resolve(__dirname, "frontend", "build", "index.html"));
+    })
+}else{
+     app.get('/', (req, res) => {
+        res.send("API is running..");
+     });
+}
+
+
+
+
+//   ---------------deployment--------------
+
+
+
 
   app.post('/addtask',async(req,res)=>{
     const {todo} = req.body;
