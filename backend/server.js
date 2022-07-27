@@ -1,5 +1,5 @@
 const express = require("express");
-// const dotenv = require('dotenv').config()
+const dotenv = require('dotenv');
 const port = process.env.PORT || 5000
 const mongoose = require("mongoose");
 const TaskSchema = require("./module");
@@ -7,10 +7,11 @@ const cors = require('cors');
 const path = require("path");
 
 const app = express();
+dotenv.config();
 
 mongoose
   .connect(
-    "mongodb+srv://srinivas:srinivas726844@cluster0.vvda6ij.mongodb.net/?retryWrites=true&w=majority",
+    process.env.MONGO_URL,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
